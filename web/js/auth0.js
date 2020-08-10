@@ -14,22 +14,28 @@ const configureClient = async () => {
 const updateUI = async () => {
   const isAuthenticated = await auth0.isAuthenticated();
 
-  document.getElementById("btn-logout").disabled = !isAuthenticated;
   document.getElementById("btn-login").disabled = isAuthenticated;
+  document.getElementById("btn-logout").disabled = !isAuthenticated;
+  document.getElementById("btn-access").disabled = !isAuthenticated;
 
   if (isAuthenticated) {
-    // document.getElementById("gated-content-1").classList.remove("hidden");
-    // document.getElementById("gated-content-2").classList.remove("hidden");
+    document.getElementById("btn-login").classList.add("hidden");
+    document.getElementById("btn-logout").classList.remove("hidden");
+    document.getElementById("btn-access").classList.remove("hidden");
 
     const claims = await auth0.getIdTokenClaims()
     const pictureUrl = claims.picture
     
+    document.getElementById("welcome").innerText = "Welcome to LocalShool, " + claims.name
+    document.getElementById("additional-info").innerText = "School: " + claims['https://localschool.dermagakode.com/school'] + ". Grade: "  + claims['https://localschool.dermagakode.com/grade']
+
     document.getElementById("avatar-img").src = pictureUrl || 'https://icon-library.net/images/icon-of-music/icon-of-music-8.jpg';
     document.getElementById("avatar-img-div").classList.remove("hidden")
 
   } else {
-    // document.getElementById("gated-content-1").classList.add("hidden");
-    // document.getElementById("gated-content-2").classList.add("hidden");
+    document.getElementById("btn-login").classList.remove("hidden");
+    document.getElementById("btn-logout").classList.add("hidden");
+    document.getElementById("btn-access").classList.add("hidden");
   }
 };
 
