@@ -28,10 +28,10 @@ const updateUI = async () => {
     
     document.getElementById("welcome").innerText = "Welcome to LocalShool, " + claims.name
     document.getElementById("additional-info").innerText = "School: " + claims['https://localschool.dermagakode.com/school'] + ". Grade: "  + claims['https://localschool.dermagakode.com/grade']
-
+    
     document.getElementById("avatar-img").src = pictureUrl || 'https://icon-library.net/images/icon-of-music/icon-of-music-8.jpg';
     document.getElementById("avatar-img-div").classList.remove("hidden")
-
+    
   } else {
     document.getElementById("btn-login").classList.remove("hidden");
     document.getElementById("btn-logout").classList.add("hidden");
@@ -45,6 +45,8 @@ window.onload = async () => {
   const query = window.location.search;
   if (query.includes("code=") && query.includes("state=")) {
     // Process the login state
+    document.getElementById("additional-info").innerText = "Please wait, fetching the data"
+
     await auth0.handleRedirectCallback();
     
     updateUI();
@@ -64,3 +66,7 @@ const logout = () => {
     returnTo: window.location.origin
   });
 };
+
+const toContent = () => {
+  window.location.href = "http://school.local:8080";
+}
